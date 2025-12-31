@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Credit Report</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: #fff;
+        color: #001133;
+        padding: 40px 20px;
+        text-align: center;
+      }
+
+      /* New class for consistent section width */
+      .section-width {
+        max-width: 600px; /* You can adjust this value as needed */
+        margin: 0 auto;
+        padding: 20px 0; /* Add some padding for spacing */
+      }
+
+      .brand {
+        font-size: 26px;
+        font-weight: bold;
+        color: #0045aa;
+      }
+
+      .brand span {
+        color: #00a6e9;
+      }
+
+      .greeting {
+        margin-top: 20px;
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      .greeting strong {
+        font-weight: bold;
+        color: #1a1a1a;
+      }
+
+      .powered {
+        font-size: 13px;
+        color: #888;
+        margin: 20px 0;
+      }
+
+      .gauge-container {
+        position: relative;
+        width: 280px;
+        height: 160px;
+        margin: 0 auto;
+        background: #f1f1f1;
+        border-radius: 100px 100px 0 0;
+      }
+
+      .score-circle {
+        position: absolute;
+        top: 48%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 130px;
+        height: 130px;
+        background: white;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+      }
+
+      .score-value {
+        font-size: 32px;
+        font-weight: bold;
+        color: #004080;
+      }
+
+      .score-label {
+        font-size: 16px;
+        font-weight: bold;
+        color: #28a745;
+        margin-top: 5px;
+      }
+
+      .range-labels {
+        display: flex;
+        justify-content: space-between;
+        width: 280px;
+        font-size: 12px;
+        margin: -10px auto 20px auto;
+      }
+
+      .description {
+        font-size: 15px;
+        color: #333;
+        margin: 20px 0;
+      }
+
+      .report-summary {
+        font-weight: bold;
+        font-size: 18px;
+        margin: 30px 0 10px;
+      }
+
+      .summary-box {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        border: 1px solid #e3e3e3;
+        border-radius: 12px;
+        padding: 10px 0;
+        font-size: 14px;
+        background: #fafafa;
+        text-align: left;
+      }
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 20px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .summary-row:last-child {
+        border-bottom: none;
+      }
+
+      .summary-title {
+        font-weight: bold;
+        color: #001133;
+      }
+
+      .summary-sub {
+        font-size: 12px;
+        color: #666;
+        margin-top: 2px;
+      }
+
+      .summary-right {
+        text-align: right;
+      }
+      .page {
+        max-width: 600px;
+        margin: 0 auto;
+        background: #f9f9f9;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      .page h1 {
+        font-size: 24px;
+        color: #004080;
+        text-align: center;
+        margin-bottom: 25px;
+      }
+
+      .page ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .page li {
+        margin: 12px 0;
+        background: #ffffff;
+        padding: 12px 18px;
+        border-left: 4px solid #00a6e9;
+        border-radius: 8px;
+        transition: all 0.2s ease-in-out;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+      }
+
+      .page li:hover {
+        background-color: #f0f8ff;
+        transform: translateX(4px);
+      }
+
+      .page a {
+        text-decoration: none;
+        color: #004080;
+        font-weight: 500;
+        display: block;
+      }
+
+      .page a:hover {
+        text-decoration: underline;
+      }
+      .loan-section {
+        margin-top: 40px;
+        text-align: left;
+        max-width: 800px; /* This will be overridden by .section-width */
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .loan-section h2 {
+        font-size: 20px;
+        color: #1c2d41;
+        margin-bottom: 10px;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 5px;
+      }
+
+      .loan-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        margin-top: 10px;
+      }
+
+      .loan-table thead {
+        background: #eef3fc;
+      }
+
+      .loan-table th,
+      .loan-table td {
+        padding: 12px 10px;
+        border: 1px solid #e0e0e0;
+        text-align: left;
+      }
+
+      .loan-table tbody tr:nth-child(even) {
+        background: #f9fafe;
+      }
+
+      .status-pill {
+        display: inline-block;
+        padding: 4px 10px;
+        font-size: 12px;
+        border-radius: 12px;
+        font-weight: 500;
+        color: white;
+      }
+
+      .status-active {
+        background-color: #28a745;
+      }
+      .status-closed {
+        background-color: #6c757d;
+      }
+      .status-restructured {
+        background-color: #007bff;
+      }
+
+      .account-container {
+        max-width: 760px; /* This will be overridden by .section-width */
+        margin: 0 auto;
+        border: 1px solid #e3e3e3;
+        border-radius: 12px;
+        background: #fdfdfd;
+        padding: 20px;
+        text-align: left;
+      }
+
+      .account-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+      }
+
+      .account-header-left {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .account-header-left span {
+        font-size: 14px;
+        color: #444;
+      }
+
+      .account-header h3 {
+        margin: 0;
+        color: #1c2d41;
+      }
+
+      .account-status-pill {
+        padding: 4px 12px;
+        border-radius: 15px;
+        background: #6c757d;
+        color: white;
+        font-size: 12px;
+      }
+
+      .details-box {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 20px;
+      }
+
+      .detail-item {
+        width: 45%;
+        font-size: 14px;
+      }
+
+      .detail-item b {
+        display: block;
+        color: #001133;
+      }
+
+      .payment-history {
+        margin-top: 30px;
+      }
+
+      .legend {
+        font-size: 13px;
+        margin-bottom: 10px;
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .legend span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .legend-circle {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      .paid-on-time {
+        background: #28a745;
+      }
+      .late-1-89 {
+        background: #ffc107;
+      }
+      .late-90 {
+        background: #dc3545;
+      }
+      .not-reported {
+        background: #adb5bd;
+      }
+
+      .calendar {
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        padding: 20px;
+      }
+
+      .year-row {
+        margin-top: 20px;
+      }
+
+      .year-label {
+        font-weight: bold;
+        margin-bottom: 8px;
+      }
+
+      .months {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        text-align: center;
+        font-size: 13px;
+        gap: 8px;
+      }
+
+      .check {
+        color: #28a745;
+        font-size: 18px;
+      }
+      .contact-section {
+        margin-top: 40px;
+        text-align: left;
+        padding: 20px;
+        background: #f9f9f9;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      .contact-section h2 {
+        font-size: 20px;
+        color: #1c2d41;
+        margin-bottom: 10px;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 5px;
+      }
+
+      .contact-section p {
+        font-size: 14px;
+        color: #444;
+        margin-bottom: 20px;
+      }
+
+      .contact-details-box {
+        border: 1px solid #e3e3e3;
+        border-radius: 12px;
+        background: #ffffff;
+        padding: 0; /* Tables will handle padding */
+        margin-bottom: 30px;
+        overflow: hidden; /* Ensures rounded corners for table */
+      }
+
+      .contact-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      .contact-table thead {
+        background: #eef3fc;
+      }
+
+      .contact-table th,
+      .contact-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #eee;
+        text-align: left;
+      }
+
+      .contact-table tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      .contact-table tbody tr:nth-child(even) {
+        background: #f9fafe;
+      }
+
+      .phone-email-container {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap; /* Allows wrapping on smaller screens */
+      }
+
+      .phone-box,
+      .email-box {
+        flex: 1; /* Allows boxes to grow and shrink */
+        min-width: 250px; /* Minimum width before wrapping */
+        border: 1px solid #e3e3e3;
+        border-radius: 12px;
+        background: #ffffff;
+        padding: 0; /* Tables will handle padding */
+        overflow: hidden;
+      }
+
+      .phone-box h3,
+      .email-box h3 {
+        font-size: 16px;
+        color: #1c2d41;
+        padding: 12px 15px;
+        margin: 0;
+        background: #eef3fc;
+        border-bottom: 1px solid #eee;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="section1" class="brand section-width">
+      UC <span>Services</span><sup>®</sup>
+    </div>
+
+    <div class="greeting section-width">
+      👋 Hey <strong>Abhijit</strong>,<br />here is your Credit Report for Jun
+      '25
+    </div>
+
+    <div class="powered">Powered by CIBIL</div>
+
+    <div class="gauge-container section-width">
+      <div class="score-circle">
+        <div class="score-value">720</div>
+        <div class="score-label">GOOD</div>
+      </div>
+    </div>
+
+    <div class="range-labels section-width">
+      <span style="color: #dc3545">300</span>
+      <span style="color: #28a745">900</span>
+    </div>
+
+    <div class="description">
+      Your free credit report is a detailed analysis of your credit score and
+      your credit accounts.
+    </div>
+
+    <div class="report-summary">Report Summary</div>
+
+    <div class="summary-box section-width">
+      <div class="summary-row">
+        <div>
+          <div class="summary-title">2 Active Loans</div>
+          <div class="summary-sub">Total loan ₹6,00,000</div>
+        </div>
+        <div class="summary-right">₹3,20,000</div>
+      </div>
+      <div class="summary-row">
+        <div>
+          <div class="summary-title">3 Active Credit Cards</div>
+          <div class="summary-sub">Total limit ₹4,00,000</div>
+        </div>
+        <div class="summary-right">₹75,000</div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-title">Overdue Payments</div>
+        <div class="summary-right">₹0</div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-title">Age of Accounts</div>
+        <div class="summary-right">3 Years 4 Months</div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-title">Recent Enquiries</div>
+        <div class="summary-right">2</div>
+      </div>
+    </div>
+
+    <div class="page section-width">
+      <h1>Table of Contents</h1>
+      <ul>
+        <li><a href="#section1">Credit Score & Report Summary</a></li>
+        <li><a href="#section2">Credit Enquiries</a></li>
+        <li><a href="#section3">Summary: Credit Accounts </a></li>
+        <li><a href="#section4">Account Details</a></li>
+        <li><a href="#section5">Contact Information</a></li>
+        <li><a href="#section6"> Support & Legend</a></li>
+      </ul>
+    </div>
+
+    <div class="loan-section" id="section2">
+      <div
+        id="section-credit-enquiries"
+        style="padding: 10px; font-family: Arial, sans-serif"
+      >
+        <style>
+          .credit-table {
+            width: 1000px;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+          }
+
+          .credit-table thead {
+            background: #eef3fc;
+          }
+
+          .credit-table th,
+          .credit-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+          }
+
+          .credit-table tbody tr:nth-child(even) {
+            background: #f9fafe;
+          }
+
+          .credit-table tbody tr:last-child td {
+            border-bottom: none;
+          }
+
+          .credit-box {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 16px;
+          }
+
+          .section-header {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1c2d41;
+            margin-bottom: 4px;
+          }
+
+          .section-sub {
+            color: #4b5563;
+            font-size: 14px;
+          }
+        </style>
+
+        <div>
+          <p class="section-header">Credit Enquiries</p>
+          <p class="section-sub">
+            This section shows the names of the credit institutions that have
+            processed a credit/loan application for you.
+          </p>
+        </div>
+
+        <div class="credit-box">
+          <table class="credit-table">
+            <thead>
+              <tr>
+                <th>Sr. No.</th>
+                <th>Enquiry Purpose</th>
+                <th>Financial Institution</th>
+                <th>Enquired on</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Personal Loan</td>
+                <td>HDFC BANK</td>
+                <td>06-06-2025</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Personal Loan</td>
+                <td>HDFC BANK</td>
+                <td>06-06-2025</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Personal Loan</td>
+                <td>HDFC BANK</td>
+                <td>13-05-2025</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Housing Loan</td>
+                <td>SBI</td>
+                <td>24-04-2025</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Business Loan General</td>
+                <td>DCB</td>
+                <td>06-02-2025</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>Gold Loan</td>
+                <td>ICICI HOME</td>
+                <td>05-01-2025</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>Housing Loan</td>
+                <td>ICICI BANK</td>
+                <td>04-01-2025</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>Two-Wheeler Loan</td>
+                <td>HDB</td>
+                <td>26-10-2024</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td>Two-Wheeler Loan</td>
+                <td>SHRIRAM FIN</td>
+                <td>26-10-2024</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td>Auto Loan (Personal)</td>
+                <td>SARASWAT CO</td>
+                <td>18-03-2024</td>
+              </tr>
+              <tr>
+                <td>11</td>
+                <td>Auto Loan (Personal)</td>
+                <td>AXIS BANK</td>
+                <td>22-02-2024</td>
+              </tr>
+              <tr>
+                <td>12</td>
+                <td>Two-Wheeler Loan</td>
+                <td>BAJAJ FIN LTD</td>
+                <td>21-11-2023</td>
+              </tr>
+              <tr>
+                <td>13</td>
+                <td>Credit Card</td>
+                <td>AXIS BANK</td>
+                <td>17-02-2023</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="loan-section section-width" id="section3">
+      <h2>Summary: Loan Accounts</h2>
+      <p>
+        This section displays summary of all your reported loan accounts found
+        in the Credit Bureau database.
+      </p>
+      <table class="loan-table">
+        <thead>
+          <tr>
+            <th>Financial Institution</th>
+            <th>Account type</th>
+            <th>Account No</th>
+            <th>Ownership</th>
+            <th>Opened Date</th>
+            <th>Account Status</th>
+            <th>Last Bank Update</th>
+            <th>Loan Amount</th>
+            <th>Outstanding Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>SHRIRAM FIN</td>
+            <td>Two-wheeler Loan</td>
+            <td>XXXX0438</td>
+            <td>Individual</td>
+            <td>16-11-2024</td>
+            <td><span class="status-pill status-active">Active</span></td>
+            <td>31-05-2025</td>
+            <td>88,670</td>
+            <td>74,346</td>
+          </tr>
+          <tr>
+            <td>SARASWAT CO</td>
+            <td>Auto Loan</td>
+            <td>XXXX3777</td>
+            <td>Individual</td>
+            <td>10-04-2024</td>
+            <td><span class="status-pill status-active">Active</span></td>
+            <td>31-05-2025</td>
+            <td>8,600</td>
+            <td>7,507</td>
+          </tr>
+          <tr>
+            <td>PCBSL</td>
+            <td>Business Loan - Unsecured</td>
+            <td>XXXX0734</td>
+            <td>Guarantor</td>
+            <td>30-08-2022</td>
+            <td><span class="status-pill status-closed">Closed</span></td>
+            <td>30-09-2024</td>
+            <td>1,00,000</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>PCBSL</td>
+            <td>Business Loan - Unsecured</td>
+            <td>XXXX0735</td>
+            <td>Guarantor</td>
+            <td>30-08-2022</td>
+            <td><span class="status-pill status-closed">Closed</span></td>
+            <td>31-03-2025</td>
+            <td>1,00,000</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>PCBSL</td>
+            <td>Business Loan - Unsecured</td>
+            <td>XXXX0736</td>
+            <td>Guarantor</td>
+            <td>30-08-2022</td>
+            <td><span class="status-pill status-closed">Closed</span></td>
+            <td>31-03-2025</td>
+            <td>1,00,000</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>PCBSL</td>
+            <td>Auto Loan</td>
+            <td>XXXX0715</td>
+            <td>Guarantor</td>
+            <td>23-08-2017</td>
+            <td>
+              <span class="status-pill status-restructured">Restructured</span>
+            </td>
+            <td>31-05-2022</td>
+            <td>13,000</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>IDFC FIRST BANK</td>
+            <td>Consumer Loan</td>
+            <td>XXXX2920</td>
+            <td>Individual</td>
+            <td>16-11-2015</td>
+            <td><span class="status-pill status-closed">Closed</span></td>
+            <td>31-03-2027</td>
+            <td>56,500</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>IDFC FIRST BANK</td>
+            <td>Two-wheeler Loan</td>
+            <td>XXXX8883</td>
+            <td>Individual</td>
+            <td>15-11-2014</td>
+            <td><span class="status-pill status-closed">Closed</span></td>
+            <td>25-12-2016</td>
+            <td>49,100</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>AXIS BANK</td>
+            <td>Personal Loan</td>
+            <td>XXXX0933</td>
+            <td>Individual</td>
+            <td>30-10-2013</td>
+            <td><span class="status-pill status-closed">Closed</span></td>
+            <td>31-01-2018</td>
+            <td>90,000</td>
+            <td>0</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 style="margin-top: 40px">Summary: Credit Cards</h2>
+      <p>
+        This section displays summary of all your reported credit cards found in
+        the Credit Bureau database.
+      </p>
+      <table class="loan-table">
+        <thead>
+          <tr>
+            <th>Financial Institution</th>
+            <th>Account type</th>
+            <th>Account No</th>
+            <th>Ownership</th>
+            <th>Opened Date</th>
+            <th>Account Status</th>
+            <th>Last Bank Update</th>
+            <th>Maximum Utilization</th>
+            <th>Outstanding Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>AXIS BANK</td>
+            <td>Credit Card</td>
+            <td>XXXX2488</td>
+            <td>Individual</td>
+            <td>06-02-2009</td>
+            <td><span class="status-pill status-closed">Closed</span></td>
+            <td>31-07-2024</td>
+            <td>15,000</td>
+            <td>0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="account-container section-width" id="section4">
+      <div class="account-header">
+        <div class="account-header-left">
+          <h3>PCBSL</h3>
+          <span>Account Number: <strong>XXXX0734</strong></span>
+          <span>Account type: <strong>Business Loan - Unsecured</strong></span>
+          <span>Account Status: <strong>Closed</strong></span>
+          <span>Ownership: <strong>Guarantor</strong></span>
+        </div>
+        <div class="account-status-pill">Closed</div>
+      </div>
+
+      <div class="details-box">
+        <div class="detail-item"><b>Account Opened Date</b>30-08-2022</div>
+        <div class="detail-item"><b>Loan Amount</b>1,00,000</div>
+        <div class="detail-item"><b>Account Closed Date</b>05-09-2024</div>
+        <div class="detail-item"><b>Settlement Amount</b>NA</div>
+        <div class="detail-item"><b>Last Bank Update</b>30-09-2024</div>
+        <div class="detail-item"><b>Overdue Amount</b>0</div>
+        <div class="detail-item"><b>Last Payment Date</b>05-09-2024</div>
+        <div class="detail-item"><b>EMI Amount</b>3,300</div>
+        <div class="detail-item"><b>Pay Start Date</b>01-09-2024</div>
+        <div class="detail-item"><b>Written Off Principal</b>-1</div>
+        <div class="detail-item"><b>Pay End Date</b>01-08-2027</div>
+        <div class="detail-item"><b>Outstanding Balance</b>0</div>
+        <div class="detail-item"><b>Repayment Tenure</b>3 years</div>
+        <div class="detail-item"><b>Interest Rate</b>11%</div>
+        <div class="detail-item"><b>Collateral</b>0</div>
+        <div class="detail-item"><b>Collateral Type</b>Others</div>
+        <div class="detail-item"><b>Suit Filed Status</b>NA</div>
+        <div class="detail-item"><b>Cash Limit</b>NA</div>
+        <div class="detail-item"><b>Payment Frequency</b>Monthly</div>
+      </div>
+
+      <div class="payment-history">
+        <div class="legend">
+          <span
+            ><span class="legend-circle paid-on-time"></span> Paid on time</span
+          >
+          <span
+            ><span class="legend-circle late-1-89"></span> 1-89 days late</span
+          >
+          <span><span class="legend-circle late-90"></span> 90+ days late</span>
+          <span
+            ><span class="legend-circle not-reported"></span> Not Reported</span
+          >
+        </div>
+
+        <div class="calendar">
+          <div class="year-row">
+            <div class="year-label">2024</div>
+            <div class="months">
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+            </div>
+          </div>
+          <div class="year-row">
+            <div class="year-label">2023</div>
+            <div class="months">
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+            </div>
+          </div>
+          <div class="year-row">
+            <div class="year-label">2022</div>
+            <div class="months">
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+              <div class="check">✔</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-section section-width" id="section5">
+      <h2>Contact Information</h2>
+      <p>
+        This section shows addresses and phone numbers reported to Credit Bureau
+        by Financial Institutions.
+      </p>
+
+      <h3>Address Details</h3>
+      <div class="contact-details-box">
+        <table class="contact-table">
+          <thead>
+            <tr>
+              <th>Address</th>
+              <th>Category</th>
+              <th>Date Reported</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Pune, Maharashtra</td>
+              <td>Permanent Address</td>
+              <td>31-12-2023</td>
+            </tr>
+            <tr>
+              <td>KA, Maharashtra</td>
+              <td>Office Address</td>
+              <td>31-12-2023</td>
+            </tr>
+            <tr>
+              <td>Pune, Maharashtra PUNE, 411036, Maharashtra</td>
+              <td>Permanent Address</td>
+              <td>30-09-2019</td>
+            </tr>
+            <tr>
+              <td>Pune 411036, Maharashtra</td>
+              <td>Residence Address</td>
+              <td>30-04-2019</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Phone Number</h3>
+      <div class="phone-email-container">
+        <div class="phone-box">
+          <table class="contact-table">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Number</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Not Classified</td>
+                <td>123456789</td>
+              </tr>
+              <tr>
+                <td>Mobile Phone</td>
+                <td>123456789</td>
+              </tr>
+              <tr>
+                <td>Home Phone</td>
+                <td>123456789</td>
+              </tr>
+              <tr>
+                <td>Mobile Phone</td>
+                <td>123456789</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Email ID</h3>
+        <div class="email-box">
+          <table class="contact-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>nomail@nomail.com</td>
+              </tr>
+              <tr>
+                <td>Abhijit.vwei@gmail.com</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
