@@ -15,7 +15,9 @@ import {
   Bell,
   LogOut,
   Banknote,
+  ClipboardPlus,
 } from "lucide-react";
+import { Label } from "recharts";
 
 const Sidebar: React.FC = () => {
   const { logout } = useAuth();
@@ -30,6 +32,7 @@ const Sidebar: React.FC = () => {
     { path: "/admin/dashboard", icon: LayoutDashboard, label: "Dashboard" },
     { path: "/admin/users", icon: Users, label: "Users" },
     { path: "/admin/kyc", icon: ShieldCheck, label: "KYC Verifications" },
+    { path: "/admin/add-application", icon: ClipboardPlus, label: "Add Application" },
     { path: "/admin/applications", icon: FileText, label: "Applications" },
     { path: "/admin/products", icon: Package, label: "Products" },
     { path: "/admin/partners", icon: Handshake, label: "Partners" },

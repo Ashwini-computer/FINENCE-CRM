@@ -17,7 +17,7 @@ import CreditImprovementPage from './pages/CreditImprovementPage';
 import LoanTransferPage from './pages/LoanTransferPage';
 import NotificationsPage from './pages/NotificationsPage';
 import SettingsPage from './pages/SettingsPage';
-import AddUserPage from './pages/AddUser';
+import AddUserPage from './pages/AddApplication';
 import UserProfilePage from './pages/UserProfilePage';
 
 function App() {
@@ -45,7 +45,7 @@ function App() {
                       <Route path="loan-transfers" element={<LoanTransferPage />} />
                       <Route path="notifications" element={<NotificationsPage />} />
                       <Route path="settings" element={<SettingsPage />} />
-                      <Route path="addUser" element={<AddUserPage />}/>
+                      <Route path="add-application" element={<AddUserPage />}/>
                        <Route path="/users/:id" element={<UserProfilePage />} />
                      <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
                     </Routes>
