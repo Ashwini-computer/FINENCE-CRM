@@ -1,18 +1,29 @@
 {
-  "name": "finance-bazar",
+  "name": "financebazaar-backend",
   "version": "1.0.0",
-  "private": true,
-  "packageManager": "npm@9.8.1",
-  "workspaces": [
-    "apps/*",
-    "backend"
-  ],
+  "description": "Backend API for FinanceBazaar Partner Management",
+  
+  "main": "server.js",
   "scripts": {
-    "dev": "turbo run dev --parallel",
-    "build": "turbo run build",
-    "lint": "turbo run lint"
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "mongodb",
+    "partners",
+    "finance"
+  ],
+  "author": "FinanceBazaar",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.3.1"
   },
   "devDependencies": {
-    "turbo": "^2.5.4"
+    "nodemon": "^3.1.0"
   }
 }
