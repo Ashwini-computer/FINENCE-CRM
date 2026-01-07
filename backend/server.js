@@ -10,10 +10,10 @@ const cookieParser = require("cookie-parser");
 const connectDB = require("./config/db");
 const errorHandler = require("./middleware/errorHandler");
 
-// Load env
+// Load environment variables
 dotenv.config();
 
-// Connect DB
+// Connect to MongoDB
 connectDB();
 
 const app = express();
@@ -21,7 +21,6 @@ const app = express();
 /* =========================
    GLOBAL MIDDLEWARE
 ========================= */
-
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
@@ -44,22 +43,45 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "templates"));
 
 /* =========================
+   SAFE ROUTE LOADER
+   Prevents Router.use crash
+========================= */
+function safeUseRoute(path, routeFile) {
+  try {
+    const route = require(routeFile);
+
+    if (typeof route !== "function") {
+      console.error(
+        `❌ Invalid route export from ${routeFile}. Expected a router function but got:`,
+        typeof route
+      );
+      return;
+    }
+
+    app.use(path, route);
+    console.log(`✅ Loaded route: ${path}`);
+  } catch (err) {
+    console.error(`❌ Failed to load route ${routeFile}`, err.message);
+  }
+}
+
+/* =========================
    API ROUTES
 ========================= */
-app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/kyc", require("./routes/kycRoutes"));
-app.use("/api/kyc/video", require("./routes/videoKycRoutes"));
-app.use("/api/cibil", require("./routes/cibilRoutes"));
-app.use("/api/products", require("./routes/productRoutes"));
-app.use("/api/applications", require("./routes/applicationRoutes"));
-app.use("/api/partners", require("./routes/partnerRoutes")); // ✅ FIXED
-app.use("/api/offers", require("./routes/offerRoutes"));
-app.use("/api/credit-improvement", require("./routes/creditImprovementRoutes"));
-app.use("/api/loan", require("./routes/loanRoutes"));
-app.use("/api/payments", require("./routes/paymentRoutes"));
-app.use("/api/recommendations", require("./routes/recommendationRoutes"));
-app.use("/api/whatsapp", require("./routes/WhatsAppRoutes"));
-app.use("/api/users", require("./routes/UserRoutes"));
+safeUseRoute("/api/auth", "./routes/authRoutes");
+safeUseRoute("/api/kyc", "./routes/kycRoutes");
+safeUseRoute("/api/kyc/video", "./routes/videoKycRoutes");
+safeUseRoute("/api/cibil", "./routes/cibilRoutes");
+safeUseRoute("/api/products", "./routes/productRoutes");
+safeUseRoute("/api/applications", "./routes/applicationRoutes");
+safeUseRoute("/api/partners", "./routes/partnerRoutes");
+safeUseRoute("/api/offers", "./routes/offerRoutes");
+safeUseRoute("/api/credit-improvement", "./routes/creditImprovementRoutes");
+safeUseRoute("/api/loan", "./routes/loanRoutes");
+safeUseRoute("/api/payments", "./routes/paymentRoutes");
+safeUseRoute("/api/recommendations", "./routes/recommendationRoutes");
+safeUseRoute("/api/whatsapp", "./routes/WhatsAppRoutes");
+safeUseRoute("/api/users", "./routes/UserRoutes");
 
 /* =========================
    BASE ROUTE
